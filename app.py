@@ -7,6 +7,8 @@ import matplotlib
 matplotlib.use('Agg')
 import seaborn as sns
 from PIL import Image
+import plotly.express as px
+
 
 
 def file_selector(folder_path='./datasets'):
@@ -19,7 +21,7 @@ def main():
 
     st.info("Stramlit documentaion are very much fun to read, it is not like the common hestic doc of other tech. I reccomand all our group members to read it")
     st.info("link for doc:https://streamlit.io/docs/api.html")
-
+  
     st.title("Dataset Explorer Steamlit App")
     image=Image.open("assistant.jpeg")
 
@@ -78,7 +80,7 @@ def main():
 
 
     all_columns_names=df.columns.tolist()
-    type_Of_plot=st.selectbox("Select Type of pllot",["area","bar","line","hist","box","kde"])
+    type_Of_plot=st.selectbox("Select Type of pllot",["area","bar","line","hist","box","kde","Scatter Plot"])
     selected_columns_names=st.multiselect("Select Columns To Plot",all_columns_names)
 
     st.write("Steamlit Comes With its in build Plots :sunglasses:")
@@ -100,6 +102,17 @@ def main():
         cust_data=df[selected_columns_names]
         st.line_chart(cust_data)
 
+    if type_Of_plot=="Scatter Plot":
+         X=selected_columns_names[0]
+         Y=selected_columns_names[1]
+      
+         fig = px.scatter(df, x =X,y=Y)
+# Plot!
+ 
+ 
+         st.plotly_chart(fig)
+
+
 
     if type_Of_plot:
         st.write("Below are matplotlib Plots")
@@ -117,6 +130,8 @@ def main():
     if st.checkbox("Correlation Polt"):
         st.write(sns.heatmap(df.corr(),annot=True))
         st.pyplot()
+   
+
 
     if st.checkbox("Value count"):
         st.text("Value count by Target")
